@@ -5,13 +5,15 @@ const products = require('./dummy-products')
 const typeDefs = gql`
     type Query {
         hello: String
-        products: [Product!]! # scalar type
+        products: [Product!]!
+        product(id: ID!): Product
     }
 
     type Product {
         name: String!
         description: String!
         quantity: Int!
+        image: String!
         price: Float!
         onSale: Boolean!
     }
@@ -23,13 +25,12 @@ const resolvers = {
             return 'whattup'
         },
         products: () => {
-            return [{
-                name: "Bike",
-                description: "Mountain Bike",
-                quantity: 20,
-                price: 99.99,
-                onSale: false
-            }]
+            return products
+        },
+        product: (parent, args, context) => {
+            const {id} = args
+           const product = products.find(product => product.id === id)
+           return product
         }
         
     }
