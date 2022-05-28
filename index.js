@@ -1,5 +1,7 @@
 const { ApolloServer, gql } = require('apollo-server')
-const products = require('./dummy-products')
+
+const products = require('./dummy-data/dummy-products')
+const categories = require('./dummy-data/dummy-categories')
 
 
 const typeDefs = gql`
@@ -7,9 +9,12 @@ const typeDefs = gql`
         hello: String
         products: [Product!]!
         product(id: ID!): Product
+        categories: [Category!]!
+        category(id: ID!): Category
     }
 
     type Product {
+        id: ID!
         name: String!
         description: String!
         quantity: Int!
@@ -17,20 +22,33 @@ const typeDefs = gql`
         price: Float!
         onSale: Boolean!
     }
+
+    type Category {
+        id: ID!
+        name: String!
+    }
 `
 
 const resolvers = {
     Query: {
-        hello: () => {
-            return 'whattup'
+        hello: (parent, args, context) => {
+            return 'World'
         },
-        products: () => {
+        products: (parent, args, context) => {
             return products
         },
         product: (parent, args, context) => {
             const {id} = args
-           const product = products.find(product => product.id === id)
-           return product
+           return products.find(product => product.id === id)
+           
+        },
+        categories: (parent, args, context) => {
+            return categories
+        },
+        category: (parent, args, context) => {
+            const {id} = args
+            return categories.find((category) => category.id === id)
+          
         }
         
     }
