@@ -6,6 +6,7 @@ const { Category } = require('./resolvers/Category')
 
 const products = require('./dummy-data/dummy-products')
 const categories = require('./dummy-data/dummy-categories')
+const reviews = require('./dummy-data/dummy-reviews')
 
 
 const server = new ApolloServer({
@@ -17,7 +18,8 @@ const server = new ApolloServer({
   },
   context: {
     products,
-    categories
+    categories,
+    reviews
   }
 });
 
